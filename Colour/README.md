@@ -1,6 +1,8 @@
-# Creative Coding Year 4
-All of the work I will do in this module will be in this repository.
+# Creative Coding Year 4 - Colour
+Generative design colour work.
 
-We will be doing generative design. Using the p5.js library.
-
-1. [Colours](../lecture1/examples/)
+1. [Part 1](01/)
+1. [Part 2](02/)
+1. [Part 3](03/)
+1. [Part 4](04/)
+1. [Part 5](05/)

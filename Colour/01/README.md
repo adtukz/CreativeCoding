@@ -1,7 +1,7 @@
 # Creative Coding Year 4 - Colour
 ## Example 1 - Mouse Controlled Rectangle
 
-[Go back to Colour](../) or [See the sketch in action!](index.html)
+[Go back to Colour](../) or [See the sketch in action!](sketch.html)
 
 In this example we control the size of the rectangle by moving across the X axis. As the value of the x axis increases, so does the size of the rectangle.
 
@@ -42,4 +42,4 @@ function keyPressed() {
 }
 ```
 
-[See the sketch in action!](index.html)
+[See the sketch in action!](sketch.html)

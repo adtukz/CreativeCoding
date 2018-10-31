@@ -1,7 +1,7 @@
 # Creative Coding Year 4 - Colour
 ## Example 3 - Colour Wheel
 
-[Go back to Colour](../) or [See the sketch in action!](index.html)
+[Go back to Colour](../) or [See the sketch in action!](sketch.html)
 
 In this example we are creating a colour wheel. We do this with the beginShape(Triangle_fan) function.
 
@@ -62,4 +62,4 @@ function draw() {
 
 The keypressed function in this sketch, will just allow the user to cycle between the number of segments the circle is made of. This is predetermined as only certain values will allow a full triangle_fan circle to work without a gap.
 
-[See the sketch in action!](index.html)
+[See the sketch in action!](sketch.html)

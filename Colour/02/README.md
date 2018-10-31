@@ -1,7 +1,7 @@
 # Creative Coding Year 4 - Colour
 ## Example 2 - Hue, Saturation and Brightness Colour Gradient
 
-[Go back to Colour](../) or [See the sketch in action!](index.html)
+[Go back to Colour](../) or [See the sketch in action!](sketch.html)
 
 In this example we are creating a Hue, Saturation and Brightness colour gradient. Where the user can control how many tiles make up the colour gradient.
 
@@ -45,4 +45,4 @@ function draw() {
 }
 ```
 
-[See the sketch in action!](index.html)
+[See the sketch in action!](sketch.html)

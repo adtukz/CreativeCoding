@@ -1,7 +1,7 @@
 # Creative Coding Year 4 - Colour
 ## Example 4 - Lerp Colour
 
-[Go back to Colour](../) or [See the sketch in action!](index.html)
+[Go back to Colour](../) or [See the sketch in action!](sketch.html)
 
 In this example we are creating are displaying the capabilities of lerpColor.
 
@@ -53,4 +53,4 @@ function draw() {
 
 ```
 
-[See the sketch in action!](index.html)
+[See the sketch in action!](sketch.html)

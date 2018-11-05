@@ -1,7 +1,7 @@
 # Creative Coding Year 4 - Colour
 ## Example 6 - Interactivity
 
-[Go back to Example 6 - Colour Patterns](../)
+[Go back to Example 6 - Colour Patterns](../) or [See the sketch in action!](sketch.html)
 
 ### Step 3
 
@@ -50,4 +50,4 @@ If the user presses:
 9. 9 it will create new random colours where the hue is 195 for ever other tile.
 10. 0 it will create new random colours where they are a lot less random as the hue is set for all colours, the first tiles hue is 140 it then switches to 210. It switches every tile so it is easier 140 or 210, making the colours very similar only varying its saturation and brightness.
 
-[Go back to Example 6 - Colour Patterns](../)
+[Go back to Example 6 - Colour Patterns](../) or [See the sketch in action!](sketch.html)

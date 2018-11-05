@@ -1,7 +1,7 @@
 # Creative Coding Year 4 - Colour
 ## Step 1 - Create Colour Arrays
 
-[Go back to Example 6 - Colour Patterns](../)
+[Go back to Example 6 - Colour Patterns](../) or [See the sketch in action!](sketch.html)
 
 ### Step 1
 
@@ -34,4 +34,4 @@ function setup() {
 
 ```
 
-[Go back to Example 6 - Colour Patterns](../)
+[Go back to Example 6 - Colour Patterns](../) or [See the sketch in action!](sketch.html)

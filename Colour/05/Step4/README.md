@@ -1,7 +1,7 @@
 # Creative Coding Year 4 - Colour
 ## Example 5 - Pixel Array
 
-[Go back to Example 5 - Pixel Array](../)
+[Go back to Example 5 - Pixel Array](../) or [See the sketch in action!](sketch.html)
 
 ### Step 4
 
@@ -34,4 +34,4 @@ function keyPressed() {
 
 ```
 
-[Go back to Example 5 - Pixel Array](../)
+[Go back to Example 5 - Pixel Array](../) or [See the sketch in action!](sketch.html)

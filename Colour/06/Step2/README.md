@@ -1,7 +1,7 @@
 # Creative Coding Year 4 - Colour
 ## Example 6 - Colour Patterns
 
-[Go back to Example 6 - Colour Patterns](../)
+[Go back to Example 6 - Colour Patterns](../) or [See the sketch in action!](sketch.html)
 
 ### Step 2
 
@@ -68,4 +68,4 @@ function draw() {
 }
 ```
 
-[Go back to Example 6 - Colour Patterns](../)
+[Go back to Example 6 - Colour Patterns](../) or [See the sketch in action!](sketch.html)

@@ -1,5 +1,5 @@
 # Creative Coding Year 4 - Colour
-## Example 3 - Colour Wheel
+## Example 7 - Random Amount of Tiles
 
 [Go back to Colour](../) or [See the sketch in action!](sketch.html)
 

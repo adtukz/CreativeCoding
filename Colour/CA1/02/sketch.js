@@ -1,38 +1,76 @@
 'use strict';
 
 function setup() {
-  //canvas with a4  sized proportions
   createCanvas(595,842);
-  //colourMode is hue/saturation/brightness
   colorMode(HSB, 360, 100, 100, 100);
-  //nostroke to be drawn around the sun.
-  noStroke();
 }
 
 function draw() {
-  //constrain the mouse to the canvas.
-  var mX = constrain(mouseX, 0, width);
-  var mY = constrain(mouseY, 0, height);
+  background(210, 55, 85);
 
-  //the suns position is based on user's mouse position.
-  var sunY = floor(mY);
 
-  //Keep updating background colour for when the sun moves.
-  if(sunY < height/2) {
-    //while the mouse is in the top half of the canvas the background gets brighter
-    background(210, 55, 60 + (sunY/20));
-  } else {
-    //while the mouse is in the bottom half of the canvas, the background begins to dim back to the original colour when mouse is 0
-    background(210, 55, 60 + ((height)/20) - (sunY/20));
-  }
-
-  //The sun's fill is yellow.
-	fill("#fdcb6e");
-  //the sun's position is based on the y position of the mouse above.
-	ellipse(width/2, sunY, 150, 150);
+  fill(198, 4 , 91);
+  noStroke(198, 4 , 91);
+  cloud1(width/4, (height/2)-50);
+  cloud2(width/4, (height/4)-100);
+  cloud3(width/4, (height/4)*3);
 }
+
+function cloud1 (startX, startY) {
+  bezier(startX - 20, startY + 10, startX , startY + 200, startX + 60, startY + 70, startX + 60, startY + 60);
+  bezier(startX + 60, startY + 60, startX + 90, startY + 120, startX + 150, startY + 150, startX + 200, startY + 70);
+  bezier(startX + 200, startY + 70, startX + 320, startY + 40, startX + 300, startY + 20, startX + 250, startY - 20);
+  bezier(startX + 250, startY - 20, startX + 280, startY - 100, startX + 240, startY - 80, startX + 200, startY - 60);
+  bezier(startX + 200, startY - 60, startX + 150, startY - 100, startX + 80, startY - 120 , startX + 40, startY - 60);
+  bezier(startX + 40, startY - 60, startX, startY - 100, startX - 80, startY - 120, startX - 20, startY -60);
+  bezier(startX - 20, startY - 60, startX - 80, startY - 20, startX - 80, startY - 20, startX - 20, startY + 10);
+  beginShape();
+   vertex(startX - 20, startY + 10);
+   vertex(startX + 60, startY + 60);
+   vertex(startX + 200, startY + 70);
+   vertex(startX + 250, startY - 20);
+   vertex(startX + 200, startY - 60);
+   vertex(startX + 40, startY - 60);
+   vertex(startX - 20, startY - 60);
+  endShape();
+}
+function cloud2 (startX, startY) {
+  bezier(startX - 40, startY + 10, startX - 20, startY + 180, startX + 60, startY + 70, startX + 100, startY + 100);
+  bezier(startX + 100, startY + 100, startX + 150, startY + 120, startX + 150, startY + 150, startX + 280, startY + 70);
+  bezier(startX + 280, startY + 70, startX + 320, startY + 40, startX + 300, startY + 20, startX + 280, startY - 40);
+  bezier(startX + 280, startY - 40, startX + 280, startY - 100, startX + 240, startY - 80, startX + 200, startY - 60);
+  bezier(startX + 200, startY - 60, startX + 140, startY - 100, startX + 70, startY - 80 , startX + 30, startY - 75);
+  bezier(startX + 30, startY - 75, startX, startY - 100, startX - 40, startY - 20, startX - 40, startY + 10);
+  beginShape();
+    vertex(startX - 40, startY + 10);
+    vertex(startX + 100, startY + 100);
+    vertex(startX + 280, startY + 70);
+    vertex(startX + 280, startY - 40);
+    vertex(startX + 200, startY - 60);
+    vertex(startX + 30, startY - 75);
+  endShape();
+}
+function cloud3 (startX, startY) {
+  bezier(startX - 80, startY + 60, startX - 20, startY + 180, startX + 60, startY + 70, startX + 60, startY + 80);
+  bezier(startX + 60, startY + 80, startX + 120, startY + 180, startX + 180, startY + 150, startX + 240, startY + 70);
+  bezier(startX + 240, startY + 70, startX + 320, startY + 40, startX + 300, startY + 20, startX + 280, startY - 40);
+  bezier(startX + 280, startY - 40, startX + 240, startY - 120, startX + 160, startY - 120, startX + 120, startY - 60);
+  bezier(startX + 120, startY - 60, startX + 80, startY - 100, startX + 70, startY - 120 , startX + 30, startY - 80);
+  bezier(startX + 30, startY - 80, startX - 20, startY - 100, startX - 40, startY - 80, startX - 40, startY - 20);
+  bezier(startX - 40, startY - 20, startX - 60, startY - 20, startX - 100, startY, startX - 80, startY + 60);
+  beginShape();
+    vertex(startX - 80, startY + 60);
+    vertex(startX + 60, startY + 80);
+    vertex(startX + 240, startY + 70);
+    vertex(startX + 280, startY - 40);
+    vertex(startX + 120, startY - 60);
+    vertex(startX + 30, startY - 80);
+    vertex(startX - 40, startY - 20);
+  endShape();
+}
+
 
 function keyPressed() {
   //if s is pressed : save the canvas as a png image, with the Y pos of the mouse and the timestamp as the name.
-  if (key == 's' || key == 'S') saveCanvas(gd.timestamp() + "_MouseY:" + mouseY, 'png');
+  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 }

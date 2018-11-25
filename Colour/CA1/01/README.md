@@ -1,7 +1,7 @@
 # Creative Coding Year 4 - Colour
 ## Part 1 - Daylight
 
-[Go back to Ca!](../) or [See the sketch in action!](sketch.html)
+[Go back to CA!](../) or [See the sketch in action!](sketch.html)
 
 The first step of creating the daylight cycle is to create the sun which moves down the canvas and follows the cursor.
 

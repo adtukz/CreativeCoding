@@ -10,7 +10,7 @@ function draw() {
 
 
   fill(198, 4 , 91);
-  noStroke(198, 4 , 91);
+  noStroke();
   cloud1(width/4, (height/2)-50);
   cloud2(width/4, (height/4)-100);
   cloud3(width/4, (height/4)*3);

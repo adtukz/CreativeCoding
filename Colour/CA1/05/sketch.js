@@ -16,7 +16,7 @@ var sunH = 37, sunS = 57, sunB = 99;
 var cloudH = 198, cloudS = 4, cloudB = 91;
 
 function setup() {
-  createCanvas(windowWidth/4, windowHeight - 20);
+  createCanvas(480, 680);
   colorMode(HSB, 360, 100, 100, 100);
 }
 
@@ -54,7 +54,7 @@ function draw() {
 	ellipse(width/2, sunY, sunR , sunR);
 
   //updated to reflect colour variables
-  fill(cloudH, cloudS, cloudB, 75 + cloudCount/2);
+  fill(cloudH, cloudS, cloudB, 65 + cloudCount/2);
   noStroke();
 
   generateClouds(cloudCount);
@@ -64,11 +64,11 @@ function generateClouds(cloudC) {
   for(var i = 0; i < cloudC; i++) {
     var cloudChance = random();
     if(cloudChance <= 0.33) {
-      cloud1(int(random(0, width)), int(random(0, height)), int(random(3,5)), int(random(3,5)));
+      cloud1(int(random(0, width)), int(random(0, height)), int(random(3,5)), int(random(2,10)));
     } else if(cloudChance <=0.66) {
-      cloud2(int(random(0, width)), int(random(0, height)), int(random(3,5)), int(random(3,5)));
+      cloud2(int(random(0, width)), int(random(0, height)), int(random(3,5)), int(random(2,10)));
     } else{
-      cloud3(int(random(0, width)), int(random(0, height)), int(random(3,5)), int(random(3,5)));
+      cloud3(int(random(0, width)), int(random(0, height)), int(random(3,5)), int(random(2,10)));
     }
   }
 }
@@ -96,6 +96,16 @@ function keyPressed() {
       writeFile([gd.ase.encode(colors)], gd.timestamp(), 'ase');
   }
   //if the user presses m the sun will move in a daylight cycle
+  if (keyCode === UP_ARROW) {
+    if(cloudCount <= 50) {
+      cloudCount++;
+    }
+  }
+  //if the user presses m the sun will move in a daylight cycle
+  if (keyCode === DOWN_ARROW) {
+    cloudCount--;
+  }
+  //if the user presses m the sun will move in a daylight cycle
   if (key == 'm' || key == 'M') {
     sunCycle = true;
   }
@@ -119,7 +129,7 @@ function keyPressed() {
   if (key == '2') {
     skyH = 210, skyS = 55, skyB = 90;
     sunH = 38, sunS = 55, sunB = 90;
-    cloudH = 38, cloudS = 55, cloudB = 90;
+    cloudH = 38, cloudS = 75, cloudB = 60;
     rS = int(random(10000));
     colourState = "Complementary";
   }
@@ -157,9 +167,9 @@ function keyPressed() {
   }
   //if we randomize hue
   if (key == '7') {
-    sunH = random(360), sunS = 57, sunB = 99;
-    skyH = random(360), skyS = 60, skyB = 91;
-    cloudH = random(360), cloudS = 100, cloudB = 72;
+    sunH = random(360), sunS = 100, sunB = 100;
+    skyH = random(360), skyS = 100, skyB = 100;
+    cloudH = random(360), cloudS = 100, cloudB = 100;
     rS = int(random(10000));
     colourState = "RandomHue";
   }

@@ -3,7 +3,7 @@
 
 [Go back to CA!](../) or [See the sketch in action!](sketch.html)
 
-Now we are going to try adding the different colour harmony's set out by https://www.creativeboom.com/resources/essential-colour-guide-for-designers-understanding-colour-theory/
+Now we are going to try adding the different colour harmonyies set out by https://www.creativeboom.com/resources/essential-colour-guide-for-designers-understanding-colour-theory/
 
  User Controls (keyPressed):
 *  1 = Default

@@ -5,6 +5,18 @@
 
 Now we are going to try adding the different colour harmony's set out by https://www.creativeboom.com/resources/essential-colour-guide-for-designers-understanding-colour-theory/
 
+ User Controls (keyPressed):
+*  1 = Default
+2. 2 = Complementary
+3. 3 = Analogue
+4. 4 = Triad
+5. 5 = Compound
+6. 6 = Shades
+7. 7 = RandomHue
+8. 8 = RandomSaturation
+9. 9 = RandomBrightness
+0. 0 = RandomEverything
+
 Firstly I have updated the sketch so that the process will be more effecient and I've added more user interactivity.
 
 Below are the changes made before setup() runs.

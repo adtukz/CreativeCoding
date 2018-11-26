@@ -16,7 +16,7 @@ var sunH = 37, sunS = 57, sunB = 99;
 var cloudH = 198, cloudS = 4, cloudB = 91;
 
 function setup() {
-  createCanvas(595,842);
+  createCanvas(windowWidth/4, windowHeight - 20);
   colorMode(HSB, 360, 100, 100, 100);
 }
 

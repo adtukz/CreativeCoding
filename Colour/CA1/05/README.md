@@ -134,6 +134,14 @@ function keyPressed() {
     rS = int(random(10000));
     colourState = "Complementary";
   }
+  //complementary colour theme
+  if (key == '3') {
+    skyH = 210, skyS = 55, skyB = 90;
+    sunH = 38, sunS = 55, sunB = 90;
+    cloudH = 38, cloudS = 55, cloudB = 90;
+    rS = int(random(10000));
+    colourState = "Complementary";
+  }
 }
 ```
 [See the sketch in action!](sketch.html)

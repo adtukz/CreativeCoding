@@ -41,11 +41,11 @@ function draw() {
   if(sunCycle === false) {
     sunY = mY;
   } else {
-    sunY += 5;
+    sunY += 15;
   }
 
   if(pauseSun === true) {
-    sunY -= 5;
+    sunY -= 15;
   }
 
   if(sunY > height/2) {
@@ -53,22 +53,22 @@ function draw() {
   }
 
   if(sunY < height/2) {
-    var sunR =  sunY/3;
+    var sunR =  sunY/5;
     background(skyH, skyS, skyB + (sunY/20));
     letterS = int(map(sunY, 0, height, 20, 80));
   } else {
-    var sunR =  sunY/3;
+    var sunR =  sunY/5;
     background(skyH, skyS, skyB + ((height)/20) - (sunY/20));
     letterS = int(map(sunY, 0, height, 80, 20));
   }
 
   fill(sunH, sunS, sunB, 100);
   noStroke();
-	ellipse(width/2, sunY, sunR , sunR);
+	//ellipse(width/2, sunY, sunR , sunR);
 
   for(var angle = 0; angle <= 360; angle += (360/word.length)) {
-    var vX = width / 2 + cos(angle) * (sunR + (sunR/10));
-    var vY = sunY + sin(angle) * (sunR + (sunR/10));
+    var vX = width / 2 + cos(angle) * (sunR*2 - (sunR/8));
+    var vY = sunY + sin(angle) * (sunR*2 - (sunR/8));
 
     var letter = map(angle, 0, 360, 0, word.length);
 
@@ -101,6 +101,8 @@ function draw() {
       mapRA = int(map(sunY, height/2, height, 0, -rAngle));
     }
 
+    strokeWeight(5);
+    stroke(skyH, skyS, skyB);
     textSize(letterS);
     letterColour();
     fill(angle, lSV, lBV);
@@ -110,9 +112,10 @@ function draw() {
       rotate(90  + angle + mapRA);
       text(word[letter], 0, 0);
       pop();
-      var rAL = int(random(0, 500));
+      var rAL = int(random(150, 300));
       for(var i = 0; i < rAL; i++){
         textSize(15);
+        noStroke();
         fill(angle, lSV, lBV, 10);
         var xPos = int(random(0,width));
         var yPos = int(random(0, height));
@@ -122,8 +125,14 @@ function draw() {
         pop();
       }
     }
-
-    fill(angle, lSV, lBV, 100);
+    strokeWeight(5);
+    stroke(skyH, skyS, skyB);
+    var bigLetterColour;
+    if(angle < 220) {
+      fill(140 + angle, lSV, lBV, 100);
+    } else {
+      fill(angle - 220, lSV, lBV, 100);
+    }
     if(letter < 10){
       textSize(55);
       text(sWord[letter], (width/6) + (letter * 35), (height*3)/4);
@@ -152,11 +161,6 @@ function randomAngle() {
 
 function keyPressed() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp() + "_ColourState_" + colourState + "_SunY_" + sunY + "_RandomSeed_" + rS, 'png');
-  if (key == 'c' || key == 'C') {
-      var colors = [];
-      colors.push(color(skyH, skyS, skyB));
-      writeFile([gd.ase.encode(colors)], gd.timestamp(), 'ase');
-  }
   if (key == 'm' || key == 'M') {
     sunCycle = true;
   }
@@ -183,37 +187,19 @@ function keyPressed() {
   //A dark theme
   if (key == '2') {
     sunH = 195, sunS = 100, sunB = 60;
-    skyH = 195, skyS = 100, skyB = 10;
+    skyH = 195, skyS = 100, skyB = 20;
     lH1 = int(random(150, 250)), lS1 = 100, lB1 = 100;
     lH2 = int(random(150, 250)), lS2 = 100, lB2 = 100;
     rS = int(random(10000));
-    colourState = "RandomSaturation";
+    colourState = "DarkTheme";
   }
   //A light theme
   if (key == '3') {
     sunH = 195, sunS = 100, sunB = 100;
     skyH = 195, skyS = 30, skyB = 100;
-    lH1 = int(random(150, 250)), lS1 = 100, lB1 = 100;
-    lH2 = int(random(150, 250)), lS2 = 100, lB2 = 100;
+    lH1 = int(random(150, 250)), lS1 = 100, lB1 = 80;
+    lH2 = int(random(150, 250)), lS2 = 100, lB2 = 80;
     rS = int(random(10000));
-    colourState = "RandomSaturation";
-  }
-  //A dark theme
-  if (key == '2') {
-    sunH = 195, sunS = 100, sunB = 60;
-    skyH = 195, skyS = 100, skyB = 10;
-    lH1 = int(random(150, 250)), lS1 = 100, lB1 = 100;
-    lH2 = int(random(150, 250)), lS2 = 100, lB2 = 100;
-    rS = int(random(10000));
-    colourState = "RandomSaturation";
-  }
-  //A light theme
-  if (key == '3') {
-    sunH = 195, sunS = 100, sunB = 100;
-    skyH = 195, skyS = 30, skyB = 100;
-    lH1 = int(random(150, 250)), lS1 = 100, lB1 = 100;
-    lH2 = int(random(150, 250)), lS2 = 100, lB2 = 100;
-    rS = int(random(10000));
-    colourState = "RandomSaturation";
+    colourState = "LightTheme";
   }
 }

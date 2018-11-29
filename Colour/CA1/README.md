@@ -6,5 +6,5 @@ Daylight Cycle Code iterations.
 1. [Part 3 - Sun and Clouds](03/)
 1. [Part 4 - User Interactivity](04/)
 1. [Part 5 - Adding Colour](05/)
-1. [Part 6 - Clouds to Text](04/)
-1. [Part 7 - Creating a Book Cover](05/)
+1. [Part 6 - Clouds to Text](06/)
+1. [Part 7 - Creating a Book Cover](07/)

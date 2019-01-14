@@ -101,42 +101,60 @@ function draw() {
       mapRA = int(map(sunY, height/2, height, 0, -rAngle));
     }
 
+    //adding stroke to around the letters
     strokeWeight(5);
+    //stroke is same as background, to outline the letters
     stroke(skyH, skyS, skyB);
     textSize(letterS);
+    //run the letter colour function
     letterColour();
+    //filling using created variables to have random values
+    //the angle is used to have the rainbow effect
     fill(angle, lSV, lBV);
     if(letter < word.length) {
+      //same as last 06
       push();
       translate(vX + mapDX, vY + mapDY);
       rotate(90  + angle + mapRA);
       text(word[letter], 0, 0);
       pop();
+      //var randomAmountOfLetters, between 150 and 300 letters for the background
       var rAL = int(random(150, 300));
+      //loop to draw the random letters
       for(var i = 0; i < rAL; i++){
+        //make the text small in the background
         textSize(15);
+        //unstroked
         noStroke();
+        //same fill as the full sized letters
         fill(angle, lSV, lBV, 10);
+        //random x and y positions
         var xPos = int(random(0,width));
         var yPos = int(random(0, height));
+        //push, rotate, draw letter, pop
         push();
         rotate(random(0,360));
         text(word[letter], xPos, yPos);
         pop();
       }
     }
+    //Stroke Heading at bottom of screen
     strokeWeight(5);
+    //fill is rainbow effect as well
     stroke(skyH, skyS, skyB);
     var bigLetterColour;
+    //making the colour of the big letters match the letters around the sun, as they are drawn in different order
     if(angle < 220) {
       fill(140 + angle, lSV, lBV, 100);
     } else {
       fill(angle - 220, lSV, lBV, 100);
     }
+    //Draw GENERATIVE at the bottom of the page
     if(letter < 10){
       textSize(55);
       text(sWord[letter], (width/6) + (letter * 35), (height*3)/4);
     }
+    //Draw DESIGN at the bottom of the page
     if(letter > 10 && letter < word.length-1) {
       textSize(55);
       text(sWord[letter], (width/4) + (letter * 38) - (400), (height*3.3)/4);

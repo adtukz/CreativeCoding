@@ -1,32 +1,51 @@
-let coloursLeft = [];
-let coloursRight = [];
+let activeStrokeCap;
+let randomS;
+
 function setup() {
-    createCanvas(800,800);
-    noStroke();
-    colorMode(HSB, 300, 100, 100);
-    createColours();
+  createCanvas(window.innerWidth, window.innerHeight);
+  angleMode(DEGREES);
+  randomS = 0;
 }
 
 function draw() {
-    let stepX = width/10;
-    let stepY = height/5;
+  background(220);
+  randomSeed(randomS);
+  strokeCap(activeStrokeCap);
 
-    for(let gridY = 0; gridY < 5; gridY++) {
-        for(let gridX = 0; gridX < 10; gridX++) {
-            let c = lerpColor(coloursLeft[gridY],coloursRight[gridY],map(gridX,0,10,0,1));
-            fill(c);
-            rect(gridX*stepX,gridY*stepY,stepX,stepY);
-        }
+  const tileCount = 50;
+  const tileWidth = width/tileCount;
+
+  const shapeAngle = 0;
+
+  fill(255,50,50);
+
+  for(let i = 0; i < tileCount+1; i++) {
+    for(let ii = 0; ii < tileCount+1; ii++) {
+      push();
+      let xPos = ii*tileWidth;
+      let yPos = i*tileWidth;
+      translate(xPos, yPos);
+      rotate(atan2((mouseY - yPos)/(mouseX - xPos))+(shapeAngle * (PI / 180)));
+      strokeWeight(5);
+      let rand = Math.floor(random(0,2));
+      if(rand === 0) {
+        line(-tileWidth/2, tileWidth/2, tileWidth/2, -tileWidth/2);
+      } else {
+        line(-tileWidth/2, -tileWidth/2, tileWidth/2, tileWidth/2);
+      }
+      pop();
     }
+  }
 }
 
-function createColours() {
-  for(let i = 0; i < 5; i++) {
-    let newCL = color(random(0,100),100,100);
-    coloursLeft.push(newCL);
-  }
-  for(let i = 0; i < 5; i++) {
-    let newCR = color(random(200,300),100,100);
-    coloursRight.push(newCR);
-  }
+function mousePressed() {
+    randomS = random(1000);
+}
+
+function keyReleased() {
+  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
+
+  if (key == '1') activeStrokeCap = ROUND;
+  if (key == '2') activeStrokeCap = SQUARE;
+  if (key == '3') activeStrokeCap = PROJECT;
 }

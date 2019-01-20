@@ -12,7 +12,7 @@ function draw() {
   randomSeed(randomS);
   strokeCap(activeStrokeCap);
 
-  const tileCount = 50;
+  const tileCount = 20;
   const tileWidth = width/tileCount;
 
   const shapeAngle = 0;
@@ -25,7 +25,7 @@ function draw() {
       let xPos = ii*tileWidth;
       let yPos = i*tileWidth;
       translate(xPos, yPos);
-      rotate(atan2((mouseY - yPos)/(mouseX - xPos))+(shapeAngle * (PI / 180)));
+      rotate(atan2((mouseY - yPos),(mouseX - xPos))+(shapeAngle * (PI / 180)));
       strokeWeight(5);
       line(-tileWidth/2, tileWidth/2, tileWidth/2, -tileWidth/2);
       pop();

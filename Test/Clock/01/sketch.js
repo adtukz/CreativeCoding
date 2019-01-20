@@ -1,3 +1,5 @@
+let isLooping = true;
+
 function setup() {
     createCanvas(900,900);
     rectMode(CENTER);
@@ -95,5 +97,11 @@ function draw() {
 }
 
 function mouseReleased() {
-  noLoop();
+  if(isLooping === true) {
+    noLoop();
+    isLooping = false;
+  } else {
+    loop();
+    isLooping = true;
+  }
 }

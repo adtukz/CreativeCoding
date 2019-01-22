@@ -21,7 +21,7 @@ function draw() {
       text(i-9, (r+20) * cos(i*30), (r+20) * sin(i*30));
     pop();
   }
-  
+
   for(let i = 0; i < 360; i++) {
     if(i%30 === 0) {
       push();

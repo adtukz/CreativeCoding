@@ -1,23 +1,33 @@
 let activeStrokeCap;
 let randomS;
+let shapes;
+
+function preload() {
+  shapes = [];
+  shapes.push(loadImage('shapes/shape2.svg'));
+  console.log(shapes);
+}
 
 function setup() {
-  createCanvas(window.innerWidth, window.innerHeight);
+  createCanvas(500, 500);
   angleMode(DEGREES);
   randomS = 0;
+  imageMode(CENTER);
 }
 
 function draw() {
+  clear();
+
   background(220);
   randomSeed(randomS);
   strokeCap(activeStrokeCap);
 
-  const tileCount = 20;
+  const tileCount = 50;
   const tileWidth = width/tileCount;
 
-  const shapeAngle = 0;
+  image(shapes[0], 0, 0, 50, 50);
 
-  fill(255,50,50);
+  stroke(30);
 
   for(let i = 0; i < tileCount+1; i++) {
     for(let ii = 0; ii < tileCount+1; ii++) {
@@ -25,9 +35,10 @@ function draw() {
       let xPos = ii*tileWidth;
       let yPos = i*tileWidth;
       translate(xPos, yPos);
-      rotate(atan2((mouseY - yPos),(mouseX - xPos))+(shapeAngle * (PI / 180)));
-      strokeWeight(5);
-      line(-tileWidth/2, tileWidth/2, tileWidth/2, -tileWidth/2);
+      rotate(atan2((mouseY - yPos),(mouseX - xPos)));
+      strokeWeight(2);
+      //line(-tileWidth/2, tileWidth/2, tileWidth/2, -tileWidth/2);
+      image(shapes[0], 0, 0, 50, 50);
       pop();
     }
   }

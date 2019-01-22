@@ -29,7 +29,7 @@ let willLoop = false;
 
 function setup() {
   createCanvas(500,500);
-  if(willLoop = false;) {
+  if(willLoop === false) {
     noLoop();
   }
   angleMode(DEGREES);
@@ -90,8 +90,11 @@ function draw() {
   fill(minuteStrokeColor);
   push();
     translate(width/2, height/2);
-    //rotate(map(minute(), 0, 60, 0, 360));
-    rotate(36);
+    if (willLoop !== true) {
+      rotate(36);
+    } else {
+      rotate(map(minute(), 0, 60, 0, 360));
+    }
     beginShape();
       vertex(minuteHandStartWidth/2, minuteHandOffset/2);
       vertex((minuteHandStartWidth/2)-minuteHandsTaper/2, -minuteHandLength);
@@ -104,8 +107,11 @@ function draw() {
   ellipse(width/2, height/2, 15, 15);
   push();
     translate(width/2, height/2);
-    //rotate(map(second(), 0, 60, 0, 360));
-    rotate(72);
+    if (willLoop !== true) {
+      rotate(72);
+    } else {
+      rotate(map(second(), 0, 60, 0, 360));
+    }
     beginShape();
       vertex(secondHandStartWidth/2, secondHandOffset/2);
       vertex((secondHandStartWidth/2)-secondHandsTaper/2, -secondHandLength);

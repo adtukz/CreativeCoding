@@ -1,6 +1,6 @@
 body {
-  background: #dfe6e9;
-  color: #2d3436;
+  background: #636e72;
+  color: #dfe6e9;
   font-style : "Roboto";
 }
 
@@ -18,4 +18,8 @@ p {
 
 hr {
   border-color: #b2bec3;
+}
+
+canvas {
+  border-radius: 25px;
 }

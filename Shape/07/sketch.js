@@ -1,18 +1,22 @@
 //setting up variables that are used throughout
-let textImg, gradientColor, gradient, runAnimation, gR, gG, gB, jR, jG, jB, jA, initialX, initialY, jX, jY;
+let textImg, gradientColor, gradient, runAnimation, gR, gG, gB, jR, jG, jB, jA, initialX, initialY, jX, jY, middleJitter;
 let CRSlider, ACSlider, FSSlider, TextBox, ABox;
-let endCircles, initialCircles, jittercircles1, jitterCircles2 = [];
+let circles;
 let circleRadius = 5;
 let pixelD = 5;
-let fontSize = 250;
+let fontSize = 750;
 let circleFill = true;
-let textTyped = "ABC";
+let wasJittering = false;
+let textTyped = "A";
+let letterRotation = 0;
 let counter = 1;
 let lerpAmount = 0;
 let jitter = false;
 let jitterCol = false;
 let selectedJitterCol = "Bright";
-let lerpJitter = 0.25;
+let lerpJitter = 0;
+let standJitterX = 0;
+let standJitterY = 0;
 
 //preloading the gradient image and the font that will be used
 function preload() {
@@ -23,7 +27,7 @@ function preload() {
 //setting up the canvas, text, creating circles and the user controls on the html page
 function setup() {
   let canvas = createCanvas(730, 600);
-  background(223, 230, 233);
+  background(45, 52, 54);
   canvas.parent("canvasHolder");
   gradient.loadPixels();
   setupText();
@@ -31,10 +35,10 @@ function setup() {
   CRSlider = createSlider(2, 20, circleRadius);
   CRSlider.parent("CRSlider");
   CRSlider.input(update);
-  ACSlider = createSlider(5, 17, 20 - pixelD);
+  ACSlider = createSlider(5, 15, 18 - pixelD);
   ACSlider.parent("ACSlider");
   ACSlider.input(update);
-  FSSlider = createSlider(150, 350, fontSize);
+  FSSlider = createSlider(200, 700, fontSize);
   FSSlider.parent("FSSlider");
   FSSlider.input(update);
   FCBox = createCheckbox('', true);
@@ -65,7 +69,8 @@ function setup() {
 
 function draw() {
   //draw background that gives the circles the trail, by setting the alpha value
-  background(223, 230, 233, 50);
+  background(45, 52, 54, 75);
+
   //if runAnimation is true, we want the circles to fly onto the canvas
   if(runAnimation) {
     //if the circles have reach the middle we want to set the values back to how they were before we started the animation
@@ -81,12 +86,12 @@ function draw() {
       //increasing counter, increases the lerpAmount variable, which when it hits 1 the animation will finish, takes 3 seconds to complete the animation at 60fps
       counter += 1;
       //loop to draw the circles
-      for(var i = 0; i < initialCircles.length; i++) {
+      for(var i = 0; i < circles.length; i++) {
         //set colour function to set the colour of the circles
-        setColour(initialCircles[i].gColor);
+        setColour(circles[i].gColor);
         //lerpX, and lerpY, are the positions the circles are currently at, while moving through the lerp from the initial position to the end position
-        let lX = lerp(initialCircles[i].xPos, endCircles[i].xPos, lerpAmount);
-        let lY = lerp(initialCircles[i].yPos, endCircles[i].yPos, lerpAmount);
+        let lX = lerp(circles[i].startX, circles[i].xPos, lerpAmount);
+        let lY = lerp(circles[i].startY, circles[i].yPos, lerpAmount);
         ellipse(lX, lY, circleRadius, circleRadius);
 
       }
@@ -95,20 +100,22 @@ function draw() {
   //else if the animation is not running
   else {
     //if the lerp jitter is in the middle we want to slow the value being added to it, to make the circles stop to see their structure clearly
-    if((lerpJitter > 0.745 && lerpJitter < 0.755) || (lerpJitter > 0.245 && lerpJitter < 0.255)) {
-      lerpJitter += 1/4800;
+    if((lerpJitter > 0.74 && lerpJitter < 0.76) || (lerpJitter > 0.24 && lerpJitter < 0.26)) {
+      lerpJitter += 1/3600;
+      middleJitter = true;
     }
     //else if the circles are not near where they are it is not jittering move faster
     else {
-      lerpJitter += 1/120;
+      lerpJitter += 1/180;
+      middleJitter = false;
     }
     //loop to draw the circles
-    for(var i = 0; i < endCircles.length; i++) {
+    for(var i = 0; i < circles.length; i++) {
       //set the colours
-      setColour(endCircles[i].gColor);
+      setColour(circles[i].gColor);
       //set the x and y values
-      let x = endCircles[i].xPos;
-      let y = endCircles[i].yPos;
+      let x = circles[i].xPos;
+      let y = circles[i].yPos;
       //if the user has selected the jitter effect
       if(jitter) {
         //if lerpJitter is creater than or equal to one, we want to reset it to 0
@@ -123,9 +130,32 @@ function draw() {
         else {
           lJ = map(lerpJitter, 0, 0.5, 0, 1);
         }
+
+        if(lerpJitter === 0.25 || lerpJitter === 0.75) {
+          let rand = random();
+          if (rand < 0.25) {
+            circles.jX *= -1;
+            circles.jY *= -1;
+          } else if (rand < 0.5) {
+            circles.jX *= 1;
+            circles.jY *= -1;
+          } else if (rand < 0.75) {
+            circles.jX *= -1;
+            circles.jY *= 1;
+          } else {
+            circles.jX *= 1;
+            circles.jY *= 1;
+          }
+        }
+
         //x and y are equal to the jitter position lerped
-        x = lerp(jitterCircles1[i].xPos, jitterCircles2[i].xPos, lJ);
-        y = lerp(jitterCircles1[i].yPos, jitterCircles2[i].yPos, lJ);
+        x = lerp(circles[i].xPos + circles[i].jX, circles[i].xPos - circles[i].jX, lJ);
+        y = lerp(circles[i].yPos + circles[i].jY, circles[i].yPos - circles[i].jY, lJ);
+
+        if(middleJitter) {
+          x += 2 * noise(x);
+          y += 2 * noise(y);
+        }
       }
       //draw the circles
       ellipse(x, y, circleRadius, circleRadius);
@@ -140,19 +170,20 @@ function setupText() {
   textImg.background(255);
   textImg.fill(0);
   textImg.textSize(fontSize);
-  textImg.textAlign(CENTER);
+  textImg.textAlign(CENTER, CENTER);
   textImg.textFont("Roboto");
-  textImg.text(textTyped, width/2, 2*height/3);
+  textImg.push();
+  textImg.translate(width/2 , height/2+75);
+  textImg.rotate(letterRotation);
+  textImg.text(textTyped, 0, 0);
+  textImg.pop();
   textImg.loadPixels();
 }
 
 //create circles, function to generate the arrays which hold the circles
 function createCircles() {
   //reset each array, to empty them
-  endCircles = [];
-  initialCircles = [];
-  jitterCircles1 = [];
-  jitterCircles2 = [];
+  circles = [];
 
   //for each pixel on the x and y axes
   for(let x = 0; x < textImg.width; x += pixelD) {
@@ -237,10 +268,7 @@ function createCircles() {
       }
       //where text appears we want to add circles to the arrays. This will allow us to create arrays full of circles which when drawn to the canvas simulate text
       if(r <= 128) {
-        endCircles.push({xPos: x, yPos: y, gColor: gradientColor});
-        initialCircles.push({xPos: initialX, yPos: initialY, gColor: gradientColor});
-        jitterCircles1.push({xPos: x + jX, yPos: y + jY, gColor: gradientColor});
-        jitterCircles2.push({xPos: x - jX, yPos: y - jY, gColor: gradientColor});
+        circles.push({xPos: x, yPos: y, startX: initialX, startY: initialY, jX: jX, jY: jY, gColor: gradientColor});
       }
     }
   }
@@ -262,6 +290,7 @@ function runA() {
   runAnimation = true;
   lerpAmount = 0;
   counter = 1;
+  background(45, 52, 54);
   ABox.hide();
 }
 

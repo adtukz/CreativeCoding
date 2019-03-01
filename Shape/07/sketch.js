@@ -1,10 +1,11 @@
 //setting up variables that are used throughout
 let textImg, font, gradient, pointRed, pointGreen, pointBlue, pointAlpha, points, previousLength;
-let CRSlider, ACSlider, FSSlider, TextBox, ABox;
+let SizeSlider, DensitySlider, FontSizeSlider, PointColorBox, PointColorDrop, ShapeDrop, TextBox;
 let linesXAxis = [];
 let linesYAxis = [];
 let backgroundPoints = [];
 let pointColBox = false;
+let shapeToDraw = "Circles";
 let pointRadius = 1;
 let pointColor = "Bright";
 let pixelD = 5;
@@ -29,7 +30,7 @@ function setup() {
   createPoints();
   angleMode(DEGREES);
 
-  SizeSlider = createSlider(2, 10, pointRadius);
+  SizeSlider = createSlider(1, 14, pointRadius);
   SizeSlider.parent("CRSlider");
   SizeSlider.input(update);
 
@@ -37,13 +38,20 @@ function setup() {
   DensitySlider.parent("ACSlider");
   DensitySlider.input(update);
 
-  FontSizeSlider = createSlider(200, 600, fontSize);
+  FontSizeSlider = createSlider(200, 700, fontSize);
   FontSizeSlider.parent("FSSlider");
   FontSizeSlider.input(update);
 
   PointColorBox = createCheckbox('', false);
   PointColorBox.parent("JCBox");
   PointColorBox.changed(update);
+
+  ShapeDrop = createSelect();
+  ShapeDrop.parent("ShapeDrop");
+  ShapeDrop.option("Circles");
+  ShapeDrop.option("X Lines");
+  ShapeDrop.option("Y Lines");
+  ShapeDrop.changed(update);
 
   PointColorDrop = createSelect();
   PointColorDrop.parent("JCDrop");
@@ -64,12 +72,7 @@ function draw() {
   //draw background that gives the points the trail, by setting the alpha value
   background(45, 52, 54, 75);
 
-  let lineRotation = map(mouseX, 0, width, -5, 5);
-  let drawCircles = true;
-  let drawXLines = true;
-  let drawYLines = false;
-
-  if(drawXLines) {
+  if(shapeToDraw === "X Lines") {
     //loop to draw the points
     for(var i = 0; i < linesXAxis.length; i++) {
       //set the x and y values
@@ -84,20 +87,18 @@ function draw() {
       let lineX = x1 - xDiff;
       let lineY = y1 - yDiff;
 
-      //set the colours
       stroke(linesXAxis[i].point1Color);
+
       strokeWeight(pointRadius);
       noFill();
       push();
       translate(lineX, lineY);
       line(xDiff, yDiff, -xDiff, -yDiff);
-      ellipse(xDiff, yDiff, pointRadius/3, pointRadius/3);
-      ellipse(-xDiff, -yDiff, pointRadius/3, pointRadius/3);
       pop();
     }
   }
 
-  if(drawYLines) {
+  if(shapeToDraw === "Y Lines") {
     //loop to draw the points
     for(var i = 0; i < linesYAxis.length; i++) {
       //set the x and y values
@@ -112,29 +113,27 @@ function draw() {
       let lineX = x1 - xDiff;
       let lineY = y1 - yDiff;
 
-      //set the colours
       stroke(linesYAxis[i].point1Color);
+
       strokeWeight(pointRadius);
       noFill();
       push();
       translate(lineX, lineY);
       line(xDiff, yDiff, -xDiff, -yDiff);
-      ellipse(xDiff, yDiff, pointRadius, pointRadius);
-      ellipse(-xDiff, -yDiff, pointRadius, pointRadius);
       pop();
     }
   }
 
-  if(drawCircles) {
+  if(shapeToDraw === "Circles") {
     for(var i = 0; i < points.length; i ++) {
       let x = points[i].xPos;
       let y = points[i].yPos;
 
       fill(points[i].pointColor);
+
       noStroke();
       ellipse(x, y, pointRadius + 5, pointRadius + 5)
     }
-
 
   }
 
@@ -161,183 +160,207 @@ function createPoints() {
   linesXAxis = [];
   linesYAxis = [];
 
-  //for each pixel on the x and y axes
-  for(let x = 0; x < textImg.width; x += pixelD) {
+  if(shapeToDraw === "Circles") {
+    //for each pixel on the x and y axes
+    for(let x = 0; x < textImg.width; x += pixelD) {
 
-    let lineBegin = false;
-    let lineX1, lineY1, lineX2, lineY2;
+      for(let y = 0; y < textImg.height; y += pixelD) {
 
-    for(let y = 0; y < textImg.height; y += pixelD) {
+        //check if a point has been picked on the line then if there is a gap and i want more pixels its a new line
+        // thats how lines should be stored
 
-      //check if a point has been picked on the line then if there is a gap and i want more pixels its a new line
-      // thats how lines should be stored
+        //finding the r value for each pixel of the text drawn
+        let index = (y * textImg.width + x) * 4;
+        let r = textImg.pixels[index];
 
-      //finding the r value for each pixel of the text drawn
-      let index = (y * textImg.width + x) * 4;
-      let r = textImg.pixels[index];
-
-      if(pointColBox) {
-        //setting up the colour themes by setting different random RGBA values for each circle being drawn
-        if (pointColorType === "Dark") {
-          pointRed = floor(random(10, 105));
-          pointGreen = floor(random(10, 105));
-          pointBlue = floor(random(10, 105));
-          pointAlpha = floor(random(150, 255));
-        } else if (pointColorType === "Bright") {
-          pointRed = floor(random(105, 210));
-          pointGreen = floor(random(105, 210));
-          pointBlue = floor(random(105, 210));
-          pointAlpha = floor(random(200, 255));
-        } else if (pointColorType === "Random") {
-          pointRed = floor(random(0, 255));
-          pointGreen = floor(random(0, 255));
-          pointBlue = floor(random(0, 255));
-          pointAlpha = floor(random(0, 255));
-        } else if (pointColorType === "Red") {
-          pointRed = floor(random(150, 255));
-          pointGreen = floor(random(20, 50));
-          pointBlue = floor(random(20, 50));
-          pointAlpha = floor(random(150, 255));
-        } else if (pointColorType === "Green") {
-          pointRed = floor(random(20, 50));
-          pointGreen = floor(random(150, 200));
-          pointBlue = floor(random(20, 50));
-          pointAlpha = floor(random(150, 255));
-        } else if (pointColorType === "Blue") {
-          pointRed = floor(random(20, 50));
-          pointGreen = floor(random(20, 50));
-          pointBlue = floor(random(150, 255));
-          pointAlpha = floor(random(150, 255));
-        }
-      } else {
-        //set the RGB = to the imported gradient
-        pointRed = gradient.pixels[index];
-        pointGreen = gradient.pixels[index+1];
-        pointBlue = gradient.pixels[index+2];
-      }
-
-      pointColor = color(pointRed, pointGreen, pointBlue, pointAlpha);
-
-      //where text appears we want to add points to the arrays. This will allow us to create arrays full of points which when drawn to the canvas simulate text
-      if(r <= 128) {
-
-        points.push({xPos: x, yPos: y, pointColor: pointColor});
-
-        if(!lineBegin) {
-          lineX1 = x;
-          lineY1 = y;
-          lineCol1 = pointColor;
-          lineBegin = true;
+        if(!pointColBox) {
+          //set the RGB = to the imported gradient
+          pointRed = gradient.pixels[index];
+          pointGreen = gradient.pixels[index+1];
+          pointBlue = gradient.pixels[index+2];
+          pointAlpha = 255;
+        } else {
+          createAColor();
         }
 
-      } else {
+        pointColor = color(pointRed, pointGreen, pointBlue, pointAlpha);
 
-          if(lineBegin) {
-            lineBegin = false;
-            lineX2 = x;
-            lineY2 = y - pixelD;
-            lineCol2 = pointColor;
+        //where text appears we want to add points to the arrays. This will allow us to create arrays full of points which when drawn to the canvas simulate text
+        if(r <= 128) {
 
-            linesXAxis.push({
-              x1Pos: lineX1,
-              y1Pos: lineY1,
-              point1Color: lineCol1,
-              x2Pos: lineX2,
-              y2Pos: lineY2,
-              point2Color: lineCol2
-            });
+          points.push({xPos: x, yPos: y, pointColor: pointColor});
 
         }
       }
     }
   }
 
-  //for each pixel on the x and y axes
-  for(let y = 0; y < textImg.width; y += pixelD) {
+  if(shapeToDraw === "X Lines") {
+    //for each pixel on the x and y axes
+    for(let x = 0; x < textImg.width; x += pixelD) {
 
-    let lineBegin = false;
-    let lineX1, lineY1, lineX2, lineY2;
+      let lineBegin = false;
+      let counter = 0;
+      let lineColPicked = false;
+      let lineX1, lineY1, lineX2, lineY2;
 
-    for(let x = 0; x < textImg.height; x += pixelD) {
+      for(let y = 0; y < textImg.height; y += pixelD) {
 
-      //check if a point has been picked on the line then if there is a gap and i want more pixels its a new line
-      // thats how lines should be stored
+        //check if a point has been picked on the line then if there is a gap and i want more pixels its a new line
+        // thats how lines should be stored
 
-      //finding the r value for each pixel of the text drawn
-      let index = (y * textImg.width + x) * 4;
-      let r = textImg.pixels[index];
+        //finding the r value for each pixel of the text drawn
+        let index = (y * textImg.width + x) * 4;
+        let r = textImg.pixels[index];
 
-      if(pointColBox) {
-        //setting up the colour themes by setting different random RGBA values for each circle being drawn
-        if (pointColorType === "Dark") {
-          pointRed = floor(random(10, 105));
-          pointGreen = floor(random(10, 105));
-          pointBlue = floor(random(10, 105));
-          pointAlpha = floor(random(150, 255));
-        } else if (pointColorType === "Bright") {
-          pointRed = floor(random(105, 210));
-          pointGreen = floor(random(105, 210));
-          pointBlue = floor(random(105, 210));
-          pointAlpha = floor(random(200, 255));
-        } else if (pointColorType === "Random") {
-          pointRed = floor(random(0, 255));
-          pointGreen = floor(random(0, 255));
-          pointBlue = floor(random(0, 255));
-          pointAlpha = floor(random(0, 255));
-        } else if (pointColorType === "Red") {
-          pointRed = floor(random(150, 255));
-          pointGreen = floor(random(20, 50));
-          pointBlue = floor(random(20, 50));
-          pointAlpha = floor(random(150, 255));
-        } else if (pointColorType === "Green") {
-          pointRed = floor(random(20, 50));
-          pointGreen = floor(random(150, 200));
-          pointBlue = floor(random(20, 50));
-          pointAlpha = floor(random(150, 255));
-        } else if (pointColorType === "Blue") {
-          pointRed = floor(random(20, 50));
-          pointGreen = floor(random(20, 50));
-          pointBlue = floor(random(150, 255));
-          pointAlpha = floor(random(150, 255));
-        }
-      } else {
-        //set the RGB = to the imported gradient
-        pointRed = gradient.pixels[index];
-        pointGreen = gradient.pixels[index+1];
-        pointBlue = gradient.pixels[index+2];
-      }
-
-      pointColor = color(pointRed, pointGreen, pointBlue, pointAlpha);
-
-      //where text appears we want to add points to the arrays. This will allow us to create arrays full of points which when drawn to the canvas simulate text
-      if(r <= 128) {
-
-        if(!lineBegin) {
-          lineX1 = x;
-          lineY1 = y;
-          lineCol1 = pointColor;
-          lineBegin = true;
+        if(!pointColBox) {
+          //set the RGB = to the imported gradient
+          pointRed = gradient.pixels[index];
+          pointGreen = gradient.pixels[index+1];
+          pointBlue = gradient.pixels[index+2];
+          pointAlpha = 255;
+        } else {
+          createAColor();
         }
 
-      } else {
+        pointColor = color(pointRed, pointGreen, pointBlue, pointAlpha);
 
-          if(lineBegin) {
-            lineBegin = false;
-            lineX2 = x - pixelD;
-            lineY2 = y;
-            lineCol2 = pointColor;
+        //where text appears we want to add points to the arrays. This will allow us to create arrays full of points which when drawn to the canvas simulate text
+        if(r <= 128) {
 
-            linesYAxis.push({
-              x1Pos: lineX1,
-              y1Pos: lineY1,
-              point1Color: lineCol1,
-              x2Pos: lineX2,
-              y2Pos: lineY2,
-              point2Color: lineCol2
-            });
+          points.push({xPos: x, yPos: y, pointColor: pointColor});
 
+          if(!lineBegin) {
+            lineX1 = x;
+            lineY1 = y;
+            if(!lineColPicked) {
+              lineColPicked = true;
+              lineCol1 = pointColor;
+            }
+            lineBegin = true;
+          }
+
+        } else {
+
+            if(lineBegin) {
+              counter++;
+              lineBegin = false;
+              lineX2 = x;
+              lineY2 = y - pixelD;
+              lineCol2 = pointColor;
+
+              linesXAxis.push({
+                x1Pos: lineX1,
+                y1Pos: lineY1,
+                point1Color: lineCol1,
+                x2Pos: lineX2,
+                y2Pos: lineY2,
+                lineCounter: counter
+              });
+
+          }
         }
       }
+    }
+  }
+
+  if(shapeToDraw === "Y Lines") {
+    //for each pixel on the x and y axes
+    for(let y = 0; y < textImg.width; y += pixelD) {
+
+      let lineBegin = false;
+      let lineColPicked = false;
+      let lineX1, lineY1, lineX2, lineY2;
+
+      for(let x = 0; x < textImg.height; x += pixelD) {
+
+        //check if a point has been picked on the line then if there is a gap and i want more pixels its a new line
+        // thats how lines should be stored
+
+        //finding the r value for each pixel of the text drawn
+        let index = (y * textImg.width + x) * 4;
+        let r = textImg.pixels[index];
+
+        if(!pointColBox) {
+          //set the RGB = to the imported gradient
+          pointRed = gradient.pixels[index];
+          pointGreen = gradient.pixels[index+1];
+          pointBlue = gradient.pixels[index+2];
+          pointAlpha = 255;
+        } else {
+          createAColor();
+        }
+
+        pointColor = color(pointRed, pointGreen, pointBlue, pointAlpha);
+
+        //where text appears we want to add points to the arrays. This will allow us to create arrays full of points which when drawn to the canvas simulate text
+        if(r <= 128) {
+
+          if(!lineBegin) {
+            lineX1 = x;
+            lineY1 = y;
+            if(!lineColPicked) {
+              lineCol1 = pointColor;
+              lineColPicked = true;
+            }
+            lineBegin = true;
+          }
+
+        } else {
+
+            if(lineBegin) {
+              lineBegin = false;
+              lineX2 = x - pixelD;
+              lineY2 = y;
+
+              linesYAxis.push({
+                x1Pos: lineX1,
+                y1Pos: lineY1,
+                point1Color: lineCol1,
+                x2Pos: lineX2,
+                y2Pos: lineY2
+              });
+          }
+
+        }
+      }
+    }
+  }
+}
+
+function createAColor() {
+  if(pointColBox) {
+    //setting up the colour themes by setting different random RGBA values for each circle being drawn
+    if (pointColorType === "Dark") {
+      pointRed = floor(random(10, 105));
+      pointGreen = floor(random(10, 105));
+      pointBlue = floor(random(10, 105));
+      pointAlpha = floor(random(150, 255));
+    } else if (pointColorType === "Bright") {
+      pointRed = floor(random(105, 210));
+      pointGreen = floor(random(105, 210));
+      pointBlue = floor(random(105, 210));
+      pointAlpha = floor(random(200, 255));
+    } else if (pointColorType === "Random") {
+      pointRed = floor(random(0, 255));
+      pointGreen = floor(random(0, 255));
+      pointBlue = floor(random(0, 255));
+      pointAlpha = floor(random(0, 255));
+    } else if (pointColorType === "Red") {
+      pointRed = floor(random(150, 255));
+      pointGreen = floor(random(20, 50));
+      pointBlue = floor(random(20, 50));
+      pointAlpha = floor(random(150, 255));
+    } else if (pointColorType === "Green") {
+      pointRed = floor(random(20, 50));
+      pointGreen = floor(random(150, 200));
+      pointBlue = floor(random(20, 50));
+      pointAlpha = floor(random(150, 255));
+    } else if (pointColorType === "Blue") {
+      pointRed = floor(random(20, 50));
+      pointGreen = floor(random(20, 50));
+      pointBlue = floor(random(150, 255));
+      pointAlpha = floor(random(150, 255));
     }
   }
 }
@@ -352,14 +375,13 @@ function update() {
   textTyped = TextBox.value();
   //this checks the drop down menu, if the user selects a new palette
   pointColorType = PointColorDrop.value();
+  shapeToDraw = ShapeDrop.value();
 
   if (PointColorBox.checked()) {
     pointColBox = true;
   } else {
     pointColBox = false;
   }
-
-  counter = 0;
 
   //we need to resetup the text and create the points to conform with the changed variables
   setupText();

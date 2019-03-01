@@ -23,3 +23,7 @@ hr {
 canvas {
   border-radius: 25px;
 }
+
+input {
+  width: 80%;
+}

@@ -5,21 +5,21 @@ let linesYAxis = [];
 let backgroundPoints = [];
 let pointColBox = false;
 let useNoise = false;
-let useFracture = false;
+let useRotate = false;
 let noiseAmount = 0;
 let shapeToDraw = "Circles";
 let pointRadius = 1;
 let pointColor = "Bright";
 let pixelD = 5;
 let fontSize = 600;
-let textTyped = "A";
+let textTyped = "W";
 let pointsLength = 0;
 let animationLerp = 0;
 let runAnimationBool = false;
 let animationDiff = 0;
 let noiseAmountX = 0;
 let noiseAmountY = 0;
-let fractureRotation = 0;
+let rotation = 0;
 
 function preload() {
   gradient = loadImage("data/gradient.png");
@@ -34,6 +34,7 @@ function setup() {
   setupText();
   createPoints();
   angleMode(DEGREES);
+  rectMode(CENTER);
 
   SizeSlider = createSlider(1, 14, pointRadius);
   SizeSlider.parent("CRSlider");
@@ -80,9 +81,9 @@ function setup() {
   NoiseBox.parent("NoiseBox");
   NoiseBox.changed(update);
 
-  FractureBox = createCheckbox('', false);
-  FractureBox.parent("FractureBox");
-  FractureBox.changed(update);
+  RotateBox = createCheckbox('', false);
+  RotateBox.parent("RotateBox");
+  RotateBox.changed(update);
 }
 
 function draw() {
@@ -94,8 +95,8 @@ function draw() {
     noiseAmountY = map(mouseY, 0, height, 0, 5);
   }
 
-  if(useFracture) {
-    fractureRotation = map(mouseX + mouseY, 0, width + height, 0, 18);
+  if(useRotate) {
+    rotation = map(mouseX + mouseY, 0, width + height, 0, 12);
   }
 
   if(runAnimationBool) {
@@ -136,8 +137,8 @@ function draw() {
 
       translate(lineX + xNoise, lineY + yNoise);
 
-      if(useFracture) {
-        rotate(linesXAxis[i].rot * fractureRotation);
+      if(useRotate) {
+        rotate(linesXAxis[i].rot * rotation);
       }
 
       if(runAnimationBool) {
@@ -145,7 +146,9 @@ function draw() {
         if(animationDiff > y1 && animationDiff < y2) {
           line(xDiff, yDiff, -xDiff, animationDiff - y2 - yDiff);
         } else if(animationDiff > y2) {
+
           line(xDiff, yDiff, -xDiff, -yDiff);
+
         }
       } else {
         line(xDiff, yDiff, -xDiff, -yDiff);
@@ -181,8 +184,8 @@ function draw() {
 
       push();
       translate(lineX + xNoise, lineY + yNoise);
-      if(useFracture) {
-        rotate(linesYAxis[i].rot * fractureRotation);
+      if(useRotate) {
+        rotate(linesYAxis[i].rot * rotation);
       }
 
       if(runAnimationBool) {
@@ -214,7 +217,12 @@ function draw() {
           yNoise = noise(y + noiseAmount) * (points[i].yFrac * noiseAmountY);
         }
         animationDiff = map(animationLerp, 0, 1, pointRadius + 5, 0);
-        ellipse(x + xNoise, y + yNoise, pointRadius - animationDiff + 5, pointRadius - animationDiff + 5);
+        let rotation = 0;
+
+        if (useRotate) {
+          rotation = points[i].rotation;
+        }
+        ellipse(x + xNoise + rotation, y + yNoise + rotation, pointRadius - animationDiff + 5, pointRadius - animationDiff + 5);
       } else {
         let xNoise = 0;
         let yNoise = 0;
@@ -223,7 +231,13 @@ function draw() {
           yNoise = noise(y + noiseAmount) * (points[i].yFrac * noiseAmountY);
         }
         noStroke();
-        ellipse(x + xNoise, y + yNoise, pointRadius + 5, pointRadius + 5)
+
+        let rotation = 0;
+
+        if (useRotate) {
+          rotation = points[i].rotation;
+        }
+        ellipse(xNoise + x + rotation, yNoise + y + rotation, pointRadius + 5, pointRadius + 5)
       }
     }
 
@@ -271,25 +285,25 @@ function createPoints() {
         if(r <= 128) {
 
           let rand = random();
-          let xFracture = 3;
-          let yFracture = 3;
-          let rotateAmount = floor(random(-5,5));
+          let xDisplacement = 3;
+          let yDisplacement = 3;
+          let rotateAmount = floor(random(-50,50));
 
           if(rand < 0.25) {
-            xFracture *= 1;
-            yFracture *= 1;
+            xDisplacement *= 1;
+            yDisplacement *= 1;
           } else if (rand < 0.5) {
-            xFracture *= -1;
-            yFracture *= 1;
+            xDisplacement *= -1;
+            yDisplacement *= 1;
           } else if (rand < 0.5) {
-            xFracture *= 1;
-            yFracture *= -1;
+            xDisplacement *= 1;
+            yDisplacement *= -1;
           } else {
-            xFracture *= -1;
-            yFracture *= -1;
+            xDisplacement *= -1;
+            yDisplacement *= -1;
           }
 
-          points.push({xPos: x, yPos: y, pointColor: pointColor, xFrac: xFracture, yFrac: yFracture});
+          points.push({xPos: x, yPos: y, pointColor: pointColor,rotation: rotateAmount, xFrac: xDisplacement, yFrac: yDisplacement});
 
         }
       }
@@ -341,22 +355,22 @@ function createPoints() {
               lineCol2 = pointColor;
 
               let rand = random();
-              let xFracture = 5;
-              let yFracture = 5;
+              let xDisplacement = 5;
+              let yDisplacement = 5;
               let rotateAmount = floor(random(-5,5));
 
               if(rand < 0.25) {
-                xFracture *= 1;
-                yFracture *= 1;
+                xDisplacement *= 1;
+                yDisplacement *= 1;
               } else if (rand < 0.5) {
-                xFracture *= -1;
-                yFracture *= 1;
+                xDisplacement *= -1;
+                yDisplacement *= 1;
               } else if (rand < 0.5) {
-                xFracture *= 1;
-                yFracture *= -1;
+                xDisplacement *= 1;
+                yDisplacement *= -1;
               } else {
-                xFracture *= -1;
-                yFracture *= -1;
+                xDisplacement *= -1;
+                yDisplacement *= -1;
               }
 
               linesXAxis.push({
@@ -365,8 +379,8 @@ function createPoints() {
                 point1Color: lineCol1,
                 x2Pos: lineX2,
                 y2Pos: lineY2,
-                xFrac: xFracture,
-                yFrac: yFracture,
+                xFrac: xDisplacement,
+                yFrac: yDisplacement,
                 rot: rotateAmount
               });
 
@@ -378,13 +392,13 @@ function createPoints() {
 
   if(shapeToDraw === "Y Lines") {
 
-    for(let y = 0; y < textImg.width; y += pixelD) {
+    for(let y = 0; y < textImg. height; y += pixelD) {
 
       let lineBegin = false;
       let lineColPicked = false;
       let lineX1, lineY1, lineX2, lineY2;
 
-      for(let x = 0; x < textImg.height; x += pixelD) {
+      for(let x = 0; x < textImg.width; x += pixelD) {
 
         let index = (y * textImg.width + x) * 4;
         let r = textImg.pixels[index];
@@ -421,22 +435,22 @@ function createPoints() {
               lineY2 = y;
 
               let rand = random();
-              let xFracture = 5;
-              let yFracture = 5;
+              let xDisplacement = 5;
+              let yDisplacement = 5;
               let rotateAmount = floor(random(-5,5));
 
               if(rand < 0.25) {
-                xFracture *= 1;
-                yFracture *= 1;
+                xDisplacement *= 1;
+                yDisplacement *= 1;
               } else if (rand < 0.5) {
-                xFracture *= -1;
-                yFracture *= 1;
+                xDisplacement *= -1;
+                yDisplacement *= 1;
               } else if (rand < 0.5) {
-                xFracture *= 1;
-                yFracture *= -1;
+                xDisplacement *= 1;
+                yDisplacement *= -1;
               } else {
-                xFracture *= -1;
-                yFracture *= -1;
+                xDisplacement *= -1;
+                yDisplacement *= -1;
               }
 
               linesYAxis.push({
@@ -445,8 +459,8 @@ function createPoints() {
                 point1Color: lineCol1,
                 x2Pos: lineX2,
                 y2Pos: lineY2,
-                xFrac: xFracture,
-                yFrac: yFracture,
+                xFrac: xDisplacement,
+                yFrac: yDisplacement,
                 rot: rotateAmount
               });
           }
@@ -521,10 +535,10 @@ function update() {
     useNoise = false;
   }
 
-  if (FractureBox.checked()) {
-    useFracture = true;
+  if (RotateBox.checked()) {
+    useRotate = true;
   } else {
-    useFracture = false;
+    useRotate = false;
   }
 
   setupText();
@@ -532,7 +546,7 @@ function update() {
 }
 
 function keyPressed() {
-  if(key === " ") {
+  if(key === "a" || key === "A") {
       runA();
   }
 }

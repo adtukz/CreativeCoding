@@ -1,10 +1,15 @@
 # Creative Coding Year 4 - Assignments
-## Assignment One - Swiss Clock
+## Assignment Two - Interactive Text
 
-[Go back to Assignments](../,,/) or [See the sketch in action!](test/sketch.html)
+[Go back to Assignments](../) or [See the sketch in action!](sketch.html)
 
-The Swiss clock was created for the first test assignment. We had to create a Swiss clock that uses one loop to draw all the ticks of the clock to the canvas and then create a minute, second and hour hand to display the current time.
+This assignment allows a user to control text in many ways. The user can choose what text is drawn to the screen, it appears as dots rather than text. These dots are then manipulated to allow for interactivity.
 
-The assignment uses ```javascript push()``` and ```javascript pop()``` to allow the centre of rotation on the canvas to be in locations
+The additions I added to this from the base application created are:
+* 1. Lines instead of dots, choose between vertical and horizontal
+* 2. Noise to jitter the lines, amount of jitter depends on cursor location
+* 3. Animation to draw dots from top to bottom, or left to right
+* 4. Rotating lines based on cursor position
+* 5. Change colour based on a number of colour palettes
 
 [See the sketch in action!](sketch.html)

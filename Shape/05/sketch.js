@@ -1,57 +1,43 @@
-let activeStrokeCap;
-let randomS;
-let shapes;
+var tileCount = 10;
 
-function preload() {
-  shapes = [];
-  shapes.push(loadImage('shapes/shape2.svg'));
-  console.log(shapes);
-}
+var tileWidth;
+var tileHeight;
+var lineSize = 50;
+var shapeAngle = 0;
+var maxDist;
+
+var sizeMode = 0;
 
 function setup() {
-  createCanvas(500, 500);
-  angleMode(DEGREES);
-  randomS = 0;
+  createCanvas(600, 600);
   imageMode(CENTER);
+  tileWidth = width / tileCount;
+  tileHeight = height / tileCount;
 }
 
 function draw() {
   clear();
 
-  background(220);
-  randomSeed(randomS);
-  strokeCap(activeStrokeCap);
+  for (var gridY = 0; gridY < tileCount; gridY++) {
+    for (var gridX = 0; gridX < tileCount; gridX++) {
 
-  const tileCount = 50;
-  const tileWidth = width/tileCount;
+      var posX = tileWidth * gridX + tileWidth / 2;
+      var posY = tileHeight * gridY + tileWidth / 2;
 
-  image(shapes[0], 0, 0, 50, 50);
+      // calculate angle between mouse position and actual position of the shape
+      var angle = atan2(mouseY - posY, mouseX - posX) + (shapeAngle * (PI / 180));
 
-  stroke(30);
-
-  for(let i = 0; i < tileCount+1; i++) {
-    for(let ii = 0; ii < tileCount+1; ii++) {
       push();
-      let xPos = ii*tileWidth;
-      let yPos = i*tileWidth;
-      translate(xPos, yPos);
-      rotate(atan2((mouseY - yPos),(mouseX - xPos)));
-      strokeWeight(2);
-      //line(-tileWidth/2, tileWidth/2, tileWidth/2, -tileWidth/2);
-      image(shapes[0], 0, 0, 50, 50);
+      translate(posX, posY);
+      rotate(angle);
+      strokeWeight(5);
+      stroke(0);
+      line(0, 0, lineSize, lineSize);
       pop();
     }
   }
 }
 
-function mousePressed() {
-    randomS = random(1000);
-}
-
 function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-
-  if (key == '1') activeStrokeCap = ROUND;
-  if (key == '2') activeStrokeCap = SQUARE;
-  if (key == '3') activeStrokeCap = PROJECT;
 }

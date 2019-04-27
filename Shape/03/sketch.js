@@ -1,48 +1,51 @@
-var segmentCount = 360;
+let activeStrokeCap;
+let randomS;
 
 function setup() {
-    createCanvas(800,800);
-    noStroke();
-    colorMode(HSB, 360, 100, 100);
+  createCanvas(window.innerWidth, window.innerHeight);
+  angleMode(DEGREES);
+  randomS = 0;
 }
 
 function draw() {
-    background(0,0,100);
-    var angle = 0;
-    var noOfSteps = segmentCount;
-    var angInc = 360/noOfSteps;
-    var radius = 300;
+  background(220);
+  randomSeed(randomS);
+  strokeCap(activeStrokeCap);
 
-    beginShape(TRIANGLE_FAN);
-        vertex(width/2,height/2);
+  const tileCount = 50;
+  const tileWidth = width/tileCount;
 
-        for(var angle = 0; angle <= 360; angle += angInc) {
-            var vx = radius * cos(radians(angle)) + width/2;
-            var vy = radius * sin(radians(angle)) + height/2;
-            fill(angle,100,100);
-            vertex(vx,vy);
-        }
-    endShape();
+  const shapeAngle = 0;
+
+  fill(255,50,50);
+
+  for(let i = 0; i < tileCount+1; i++) {
+    for(let ii = 0; ii < tileCount+1; ii++) {
+      push();
+      let xPos = ii*tileWidth;
+      let yPos = i*tileWidth;
+      translate(xPos, yPos);
+      rotate(atan2((mouseY - yPos)/(mouseX - xPos))+(shapeAngle * (PI / 180)));
+      strokeWeight(5);
+      let rand = Math.floor(random(0,2));
+      if(rand === 0) {
+        line(-tileWidth/2, tileWidth/2, tileWidth/2, -tileWidth/2);
+      } else {
+        line(-tileWidth/2, -tileWidth/2, tileWidth/2, tileWidth/2);
+      }
+      pop();
+    }
+  }
 }
 
-function keyPressed() {
-    if(key === 's' || key === 'S') saveCanvas(gd.timestamp(),'png');
+function mousePressed() {
+    randomS = random(1000);
+}
 
-    switch (key) {
-        case '1':
-            segmentCount = 360;
-            break;
-        case '2':
-            segmentCount = 45;
-            break;
-        case '3':
-            segmentCount = 24;
-            break;
-        case '4':
-            segmentCount = 12;
-            break;
-        case '5':
-            segmentCount = 6;
-            break;
-    }
+function keyReleased() {
+  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
+
+  if (key == '1') activeStrokeCap = ROUND;
+  if (key == '2') activeStrokeCap = SQUARE;
+  if (key == '3') activeStrokeCap = PROJECT;
 }

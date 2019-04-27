@@ -25,7 +25,7 @@ let secondHandLength = 155;
 let secondHandOffset = 80;
 let secondHandStartWidth = 10;
 
-let willLoop = false;
+let willLoop = true;
 
 function setup() {
   createCanvas(500,500);

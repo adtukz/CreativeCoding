@@ -6,5 +6,3 @@ Generative design shape work.
 3. [Part 3](03/)
 4. [Part 4](04/)
 5. [Part 5](05/)
-6. [Part 6](06/)
-7. [Part 7](07/)
